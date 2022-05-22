@@ -34,3 +34,4 @@ get_returns <- function(df) {
     filter(!is.na(percentage)) %>% 
     select(date, percentage)
 }
+

@@ -1,5 +1,8 @@
-cor_heatmap <- function(data, symbols){
-  ns <- 30
+source("data-wrangling.R")
+
+cor_heatmap <- function(data){
+  symbols <- names(data)
+  ns <- ncol(data)
   par(mfrow=c(1,1),mar=c(3,3,3,3),cex.axis=.75)
   R <- cor(data); R[R==1] <-  NA
   image(1:ns,1:ns,R,col=c("cyan","green","brown","yellow","red"), breaks=c(0,.25,.5,.7,.75,1),xlab="",ylab="",axes=F)
@@ -12,8 +15,14 @@ cor_heatmap <- function(data, symbols){
   }
 }
 
-p_cor_heatmap <- function(data, symbols){
-  ns <- 30
+data_cleaned <- data_cleaned %>% 
+  select(-date)
+
+cor_heatmap(data_cleaned, names(data_cleaned))
+
+p_cor_heatmap <- function(data){
+  symbols <- names(data)
+  ns <- ncol(data)
   par(mfrow=c(1,1),mar=c(3,3,3,3),cex.axis=.75)
   R=cor(data)
   iR=iiR=solve(R)
@@ -35,4 +44,5 @@ p_cor_heatmap <- function(data, symbols){
   }
     
 }
-  
+
+p_cor_heatmap(data_cleaned, names(data_cleaned))
