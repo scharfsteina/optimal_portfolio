@@ -29,9 +29,8 @@ draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0){
   return(plot)
 }
 
-draw_markowitz(0.1, 0.01, 0.2, 0.05)
+#draw_markowitz(0.1, 0.01, 0.2, 0.05)
 
-data <- data_cleaned
 pairwise_markowitz <- function(data){
   symbols <- names(data)
   cor_matrix <- cor(data)
@@ -62,7 +61,7 @@ pairwise_markowitz <- function(data){
   }
 }
 
-pairwise_markowitz(data_cleaned %>% select(-1))
+#pairwise_markowitz(data_cleaned %>% select(-1))
 
 min_markowitz <- function(mu, omega, returns){
   inv_omega <- solve(omega)
@@ -75,6 +74,3 @@ min_markowitz <- function(mu, omega, returns){
   w <- inv_omega %*% (a * mu + ((1 - a * A) / C) * rep(1, length(mu)))
   return(w)
 }
-
-test <- min_markowitz(mean, omega, 0.05)
-test[1] + test[2] + test[3]
