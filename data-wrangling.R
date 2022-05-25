@@ -13,6 +13,17 @@ ndays <- lengths(ex)[1]
 data <- data.frame(matrix(nrow = ndays, ncol = 1))
 names(data) <- "date"
 
+get_returns <- function(df) {
+  df <- df %>%
+    mutate(date = as.Date(Date, format = "%b %d, %Y"),
+           close = `Close*` %>% as.double()) %>%
+    filter(!is.na(close)) %>%
+    arrange(date) %>%
+    mutate(percentage = (close-lag(close))/lag(close)) %>% 
+    filter(!is.na(percentage)) %>% 
+    select(date, percentage)
+}
+
 
 for (i in seq_along(stocks)) {
   html <- read_html(paste0("https://finance.yahoo.com/quote/",stocks[i],"/history"))
@@ -20,17 +31,9 @@ for (i in seq_along(stocks)) {
     get_returns() %>% 
     left_join(data, by = "date")
 }
+
 names(data) <- c("date",stocks)
 data_cleaned <- data %>%
   na.omit()
 
-get_returns <- function(df) {
-  df %>%
-    mutate(date = as.Date(Date, format = "%b %d, %Y"),
-           close = `Close*` %>% as.double()) %>%
-    filter(!is.na(close)) %>%
-    arrange(date) %>%
-    mutate(percentage = 100*(close-lag(close))/lag(close)) %>% 
-    filter(!is.na(percentage)) %>% 
-    select(date, percentage)
-}
+
