@@ -2,16 +2,23 @@
 library(rvest)
 library(tidyverse)
 library(lubridate)
+library(quantmod)
 
 stocks <- html_table(read_html("https://www.dogsofthedow.com/dowcomp.htm"))[[1]]
 stocks <- stocks %>%
   pull(Symbol)
   
 # this is only 2022 data
-ex <- html_table(read_html(paste0("https://finance.yahoo.com/quote/",stocks[1],"/history")))[[1]]
-ndays <- lengths(ex)[1]
-data <- data.frame(matrix(nrow = ndays, ncol = 1))
-names(data) <- "date"
+# ex <- html_table(read_html(paste0("https://finance.yahoo.com/quote/",stocks[1],"/history")))[[1]]
+# ndays <- lengths(ex)[1]
+# data <- data.frame(matrix(nrow = ndays, ncol = 1))
+# names(data) <- "date"
+
+get_stock <- function(.stock) {
+  df <- loadSymbols(.stock, from = as.Date("2020-01-01"), to = as.Date("2021-12-31"))
+  print(df)
+}
+
 
 get_returns <- function(df) {
   df <- df %>%
