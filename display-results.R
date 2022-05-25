@@ -18,10 +18,10 @@ final <- get_linear_combos(data_cleaned, weights)
 plot(final$date,
      final$markowitz,
      col = "red",
-     main = "Comparing Portfolio Allocation Strategies of Dow 30 Stock Portfolio",
+     main = "Comparing Portfolio Allocation Strategies of Dow 30",
      type = "l",
      ylim = c(min(final$markowitz,final$equal)-.25,max(final$markowitz,final$equal)+.25),
-     xlab = "Date",
+     xlab = "2022",
      ylab = "",
      lwd = 2)
 lines(final$date, final$equal, col = "blue")
@@ -33,6 +33,4 @@ legend("bottomleft", c("Optimal Portfolio Allocation",
        seg.len = 1,
        text.width = 28,
        x.intersp = .25)
-
-
   
