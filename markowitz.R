@@ -2,34 +2,45 @@ library(tidyverse)
 library(ggthemes)
 library(patchwork)
 
-draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0){
+draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0, range = 0.4){
   alphas <- seq(0, 1, 0.001)
   
   mean_total <- mean_1 * alphas + mean_2 * (1 - alphas)
   variance <- var_1 * alphas^2 + 2 * alphas * (1 - alphas) * rho * 
-    sqrt(var_1 + var_2) + var_2 * (1 - alphas)^2
+    sqrt(var_1 * var_2) + var_2 * (1 - alphas)^2
+  variance_rho_p <- var_1 * alphas^2 + 2 * alphas * (1 - alphas) * (rho + range) * 
+    sqrt(var_1 * var_2) + var_2 * (1 - alphas)^2
+  variance_rho_m <- var_1 * alphas^2 + 2 * alphas * (1 - alphas) * (rho - range) * 
+    sqrt(var_1 * var_2) + var_2 * (1 - alphas)^2
   
   df <- tibble(
     mean = mean_total,
-    variance = variance
-  )
+    variance = variance,
+    var_p = variance_rho_p,
+    var_m = variance_rho_m
+  ) %>% 
+    pivot_longer(cols = 2:ncol(.), names_to = "rhos", values_to = "variance")
   
-  min_alpha <- alphas[min(variance) == variance]
-  
-  plot <- ggplot(df, aes(variance, mean)) +
-    geom_path() +
+  plot <- ggplot(df) +
+    geom_path(aes(variance, mean, linetype = rhos)) +
     labs(
       title = paste0("Markowitz bullet with mu1 = ", mean_1, 
                      ", var1 = ", var_1, ", mu2 = ", mean_2, ", var2 = ", var_1),
       x = "Variance/Volatility",
-      y = "Mean"
+      y = "Mean",
+      linetype = NULL
     ) +
-    theme_few()
+    scale_linetype_manual(labels = c(str_c("rho = ", rho - range),
+                              str_c("rho = ", rho + range),
+                              str_c("rho = ", rho)),
+                          values = c(2, 3, 1)) +
+    theme_few() +
+    theme(legend.position = "bottom")
   
   return(plot)
 }
 
-#draw_markowitz(0.1, 0.01, 0.2, 0.05)
+draw_markowitz(0.1, 0.01, 0.2, 0.05)
 
 pairwise_markowitz <- function(data){
   symbols <- names(data)
@@ -63,7 +74,7 @@ pairwise_markowitz <- function(data){
 
 #pairwise_markowitz(data_cleaned %>% select(-1))
 
-min_markowitz <- function(mu, omega, returns){
+opt_markowitz <- function(mu, omega, returns){
   inv_omega <- solve(omega)
   A <- (t(mu) %*% inv_omega %*% rep(1, length(mu)))[1,1]
   B <- (t(mu) %*% inv_omega %*% mu)[1,1]
