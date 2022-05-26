@@ -1,6 +1,4 @@
-source("data-wrangling.R")
-#library(tidyverse)
-#library(ggthemes)
+#source("data-wrangling.R")
 get_linear_combos <- function(df, opt_weights) {
   date <- df[,1]
   df <- df[,-1] %>% as.matrix()

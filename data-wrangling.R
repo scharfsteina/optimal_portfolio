@@ -4,41 +4,43 @@ library(tidyverse)
 library(lubridate)
 library(quantmod)
 
-stocks <- html_table(read_html("https://www.dogsofthedow.com/dowcomp.htm"))[[1]]
-stocks <- stocks %>%
-  pull(Symbol)
+stocks <- html_table(read_html("https://bullishbears.com/dow-jones-stocks-list/"))
+stocks <- rbind(stocks[[1]],stocks[[3]]) %>% pull()
+stocks <- stocks[stocks!="UTX"]
+
+get_data <- function(.from, .to) {
+  data <- NULL
+  get_stock <- function(.stock) {
+    df <- loadSymbols(.stock, 
+                      from = .from, 
+                      to = .to, 
+                      env = NULL) %>% 
+      as.data.frame() %>% 
+      tibble::rownames_to_column("date") %>% 
+      as.tibble() %>% 
+      mutate(date = as.Date(date)) %>% 
+      select(1,5) %>% 
+      setNames(c("date","close")) %>% 
+      mutate(percentage = (close-lag(close))/lag(close)) %>% 
+      filter(!is.na(percentage)) %>% 
+      select(date, percentage)
+  }
   
-# this is only 2022 data
-# ex <- html_table(read_html(paste0("https://finance.yahoo.com/quote/",stocks[1],"/history")))[[1]]
-# ndays <- lengths(ex)[1]
-# data <- data.frame(matrix(nrow = ndays, ncol = 1))
-# names(data) <- "date"
-
-get_stock <- function(.stock) {
-  df <- loadSymbols(.stock, from = as.Date("2020-01-01"), to = as.Date("2021-12-31"))
-  print(df)
+  for (i in seq_along(stocks)) {
+    if (i == 1) {
+      data <- get_stock(stocks[i])
+    } else {
+      temp <- get_stock(stocks[i])$percentage
+      data <- cbind(data,temp)
+    }
+  }
+  
+  names(data) <- c("date",stocks)
+  data <- data %>%
+    as.tibble()
 }
 
-
-get_returns <- function(df) {
-  df <- df %>%
-    mutate(date = as.Date(Date, format = "%b %d, %Y"),
-           close = `Close*` %>% as.double()) %>%
-    filter(!is.na(close)) %>%
-    arrange(date) %>%
-    mutate(percentage = (close-lag(close))/lag(close)) %>% 
-    filter(!is.na(percentage)) %>% 
-    select(date, percentage)
-}
+historical_data <- get_data(.from = make_date(2020,1,1), .to = make_date(2021,12,31))
+current_data <- get_data(.from = make_date(2022,1,1), .to = today())
 
 
-for (i in seq_along(stocks)) {
-  html <- read_html(paste0("https://finance.yahoo.com/quote/",stocks[i],"/history"))
-  data <- html_table(html)[[1]] %>% 
-    get_returns() %>% 
-    left_join(data, by = "date")
-}
-
-names(data) <- c("date",stocks)
-data_cleaned <- data %>%
-  na.omit()
