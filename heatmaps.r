@@ -1,5 +1,3 @@
-source("data-wrangling.R")
-
 cor_heatmap <- function(data){
   symbols <- names(data)
   ns <- ncol(data)
