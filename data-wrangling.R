@@ -4,9 +4,10 @@ library(tidyverse)
 library(lubridate)
 library(quantmod)
 
-stocks <- html_table(read_html("https://bullishbears.com/dow-jones-stocks-list/"))
-stocks <- rbind(stocks[[1]],stocks[[3]]) %>% pull()
-stocks <- stocks[stocks!="UTX"] # this library doesn't have UTX data
+
+stocks <- html_table(read_html("https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average"))[[2]]
+stocks <- stocks$Symbol
+#stocks <- stocks[stocks!="UTX"] # this library doesn't have UTX data
 
 get_data <- function(.from, .to) {
   data <- NULL
@@ -41,6 +42,5 @@ get_data <- function(.from, .to) {
 }
 
 historical_data <- get_data(.from = make_date(2020,1,1), .to = make_date(2021,12,31))
-current_data <- get_data(.from = make_date(2022,1,1), .to = today())
 
 
