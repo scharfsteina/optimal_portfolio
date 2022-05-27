@@ -24,8 +24,7 @@ draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0, range = 0.4){
   plot <- ggplot(df) +
     geom_path(aes(variance, mean, linetype = rhos)) +
     labs(
-      title = paste0("Markowitz bullet with mu1 = ", mean_1, 
-                     ", var1 = ", var_1, ", mu2 = ", mean_2, ", var2 = ", var_1),
+      title = paste0("Markowitz bullet"),
       x = "Variance/Volatility",
       y = "Mean",
       linetype = NULL
@@ -35,7 +34,7 @@ draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0, range = 0.4){
                               str_c("rho = ", rho)),
                           values = c(2, 3, 1)) +
     theme_few() +
-    theme(legend.position = "bottom")
+    theme(legend.position = c(0.75, 0.25))
   
   return(plot)
 }
