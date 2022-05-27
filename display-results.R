@@ -4,8 +4,18 @@ get_linear_combos <- function(df, opt_weights) {
   df <- df[,-1] %>% as.matrix()
   markowitz <- as.matrix(df) %*% as.matrix(opt_weights)
   equal <- as.matrix(df) %*% as.matrix(rep(1,length(opt_weights))/length(opt_weights)) # equally weighted
-  ret <- bind_cols(date,as.vector(markowitz), as.vector(equal))
-  colnames(ret) <- c("date", "markowitz", "equal")
+  cum_markowitz <- markowitz %>% 
+    as.tibble() %>% 
+    mutate(m_plus = V1+1,
+           cumulative_markowitz = m_plus %>% cumprod()) %>% 
+    select(cumulative_markowitz)
+  cum_equal <- equal %>% 
+    as.tibble() %>% 
+    mutate(e_plus = V1+1,
+           cumulative_equal = e_plus %>% cumprod()) %>% 
+    select(cumulative_equal)
+  ret <- bind_cols(date, as.vector(markowitz), as.vector(cum_markowitz), as.vector(equal), as.vector(cum_equal))
+  colnames(ret) <- c("date", "markowitz","cumulative_markowitz", "equal", "cumulative_equal")
   return(ret)
 }
 
@@ -33,9 +43,29 @@ get_linear_combos <- function(df, opt_weights) {
 #          x.intersp = .25)
 # }
 
-plot_gg <- function(final) {
+plot_daily <- function(final) {
   final %>%
-    pivot_longer(values_to = "returns", names_to = "method", cols = markowitz:equal) %>%
+    pivot_longer(values_to = "returns", names_to = "method", cols = c(markowitz,equal)) %>%
+    ggplot(aes(x = date, y = returns, color = method)) +
+    geom_line() +
+    #geom_smooth() +
+    expand_limits(y = c(-1, 1)) +
+    scale_color_manual(labels  =c("Equal Weights", "Markowitz"), values = c("blue", "red")) +
+    labs(title = "Comparing Returns of Portfolio Allocation Strategies on Dow 30",
+         x = "Date",
+         y = "Return (in %)") +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5),
+          legend.title = element_blank(),
+          legend.position = "bottom")
+}
+
+plot_cumulative <- function(final) {
+  final %>%
+    pivot_longer(values_to = "returns", 
+                 names_to = "method", 
+                 cols = c(cumulative_markowitz, 
+                          cumulative_equal)) %>%
     ggplot(aes(x = date, y = returns, color = method)) +
     geom_line() +
     #geom_smooth() +
@@ -53,5 +83,5 @@ plot_gg <- function(final) {
 current_data <- get_data(.from = make_date(2022,1,1), .to = today())
 final <- get_linear_combos(current_data, rnorm(length(current_data)-1))
 
-#plot_base(final)
-plot_gg(final)
+plot_daily(final)
+plot_cumulative(final)
