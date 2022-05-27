@@ -1,3 +1,5 @@
+## Scrape stock data of Dow Jones and calculate daily returns
+
 get_data <- function(.from, .to) {
   stocks <- html_table(read_html("https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average"))[[2]]
   stocks <- stocks$Symbol
@@ -34,4 +36,6 @@ get_data <- function(.from, .to) {
   names(data) <- c("date", stocks)
   data <- data %>%
     as_tibble()
+  
+  return(data)
 }

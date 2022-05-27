@@ -1,3 +1,6 @@
+## Calculate the daily and cumulative returns of the portfolio using Markowitz weights,
+## interval weights, and equal weights
+
 get_linear_combos <- function(data, weights_markowitz, weights_interval) {
   date <- data[, 1]
   data <- data[, -1] %>% as.matrix()

@@ -1,3 +1,6 @@
+## Plot the daily and cumulative returns using the returns calculated in linear_combos.R
+
+# Plot daily returns
 plot_daily <- function(final) {
   final %>%
     pivot_longer(values_to = "returns", names_to = "method", cols = c(markowitz, interval, equal)) %>%
@@ -16,6 +19,8 @@ plot_daily <- function(final) {
           legend.position = "bottom")
 }
 
+
+# Plot cumulative returns
 plot_cumulative <- function(final) {
   final %>%
     pivot_longer(values_to = "returns", names_to = "method", cols = c(cumulative_markowitz,
