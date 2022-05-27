@@ -1,4 +1,6 @@
-qq_gg <- function(data) {
+## Plot qq-plots for the daily returns of the stocks
+
+qq_plot <- function(data) {
   data %>%
     pivot_longer(names_to = "symbol", values_to = "returns", cols = AXP:VZ) %>%
     ggplot(aes(sample = returns)) +
