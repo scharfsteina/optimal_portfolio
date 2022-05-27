@@ -6,7 +6,7 @@ library(quantmod)
 
 stocks <- html_table(read_html("https://bullishbears.com/dow-jones-stocks-list/"))
 stocks <- rbind(stocks[[1]],stocks[[3]]) %>% pull()
-stocks <- stocks[stocks!="UTX"]
+stocks <- stocks[stocks!="UTX"] # this library doesn't have UTX data
 
 get_data <- function(.from, .to) {
   data <- NULL
