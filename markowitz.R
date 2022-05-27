@@ -72,9 +72,11 @@ pairwise_markowitz <- function(data){
   }
 }
 
-#pairwise_markowitz(data_cleaned %>% select(-1))
-
-opt_markowitz <- function(mu, omega, returns){
+# Get optimal weights from markowitz method
+opt_markowitz <- function(df, returns){
+  mu <- colMeans(df)
+  omega <- var(df)
+  
   inv_omega <- solve(omega)
   A <- (t(mu) %*% inv_omega %*% rep(1, length(mu)))[1,1]
   B <- (t(mu) %*% inv_omega %*% mu)[1,1]

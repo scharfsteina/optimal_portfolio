@@ -80,8 +80,8 @@ plot_cumulative <- function(final) {
           legend.position = "bottom")
 }
 
-current_data <- get_data(.from = make_date(2022,1,1), .to = today())
-final <- get_linear_combos(current_data, rnorm(length(current_data)-1))
-
-plot_daily(final)
-plot_cumulative(final)
+# current_data <- get_data(.from = make_date(2022,1,1), .to = today())
+# final <- get_linear_combos(current_data, rnorm(length(current_data)-1))
+# 
+# plot_daily(final)
+# plot_cumulative(final)
