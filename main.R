@@ -1,4 +1,3 @@
-#library(ggpubr)
 library(qqplotr)
 library(rvest)
 library(tidyverse)
@@ -20,6 +19,12 @@ draw_markowitz(0.1, 0.01, 0.2, 0.05)
 
 historical_data <- get_data(.from = make_date(2020,1,1), .to = make_date(2021,12,31))
 current_data <- get_data(.from = make_date(2022,1,1), .to = make_date(2022,5,1))
+
+qq_plot(historical_data)
+qq_plot_ind(historical_data, "DOW") # plot an individual qqplot
+
+cor_heatmap(historical_data)
+pcor_heatmap(historical_data)
 
 weights_m <- get_weights_markowitz(historical_data %>% select(-1), 0.005)
 weights_i <- get_weights_interval(historical_data %>% select(-1), -0.05, 1)
