@@ -33,7 +33,7 @@ draw_pairwise_markowitz <- function(data){
 }
 
 
-
+# Helper function for pairwise Markowitz
 draw_marko_simple <- function(mean_1, var_1, mean_2, var_2, rho = 0){
   if (rho == 1){
     return(ggplot() + labs(x = NULL, y = NULL))
