@@ -7,7 +7,7 @@ get_linear_combos <- function(data, weights_markowitz, weights_interval) {
   
   markowitz <- as.matrix(data) %*% as.matrix(weights_markowitz)
   interval <- as.matrix(data) %*% as.matrix(weights_interval)
-  equal <- as.matrix(data) %*% as.matrix(rep(1, length(opt_weights)) / length(opt_weights)) # equally weighted
+  equal <- as.matrix(data) %*% as.matrix(rep(1, length(weights_markowitz)) / length(weights_markowitz)) # equally weighted
   
   cum_markowitz <- markowitz %>% 
     as_tibble() %>% 
