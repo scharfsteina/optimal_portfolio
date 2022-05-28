@@ -32,7 +32,10 @@ draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0, range = 0.4) {
                                      str_c("\U0003C1 = ", rho)),
                           values = c(2, 3, 1)) +
     theme_few() +
-    theme(legend.position = c(0.75, 0.25))
+    theme(legend.position = c(0.1, .85),
+          legend.text=element_text(size=15),
+          legend.background = element_rect(colour = 'black', fill = 'white', linetype='solid'),
+          legend.title = NULL)
   
   return(plot)
 }
