@@ -13,10 +13,10 @@ cor_heatmap <- function(data){
   }
 }
 
-data_cleaned <- data_cleaned %>% 
-  select(-date)
-
-cor_heatmap(data_cleaned, names(data_cleaned))
+# data_cleaned <- data_cleaned %>% 
+#   select(-date)
+# 
+# cor_heatmap(data_cleaned, names(data_cleaned))
 
 p_cor_heatmap <- function(data){
   symbols <- names(data)
@@ -43,4 +43,4 @@ p_cor_heatmap <- function(data){
     
 }
 
-p_cor_heatmap(data_cleaned, names(data_cleaned))
+# p_cor_heatmap(data_cleaned, names(data_cleaned))
