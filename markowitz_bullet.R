@@ -27,12 +27,13 @@ draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0, range = 0.4) {
       y = "Mean",
       linetype = NULL
     ) +
-    scale_linetype_manual(labels = c(str_c("rho = ", rho - range),
-                                     str_c("rho = ", rho + range),
-                                     str_c("rho = ", rho)),
+    scale_linetype_manual(labels = c(str_c("\U0003C1 = ", rho - range),
+                                     str_c("\U0003C1 = ", rho + range),
+                                     str_c("\U0003C1 = ", rho)),
                           values = c(2, 3, 1)) +
     theme_few() +
     theme(legend.position = c(0.75, 0.25))
   
   return(plot)
 }
+
