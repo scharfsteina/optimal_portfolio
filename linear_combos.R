@@ -17,7 +17,7 @@ get_linear_combos <- function(data, weights_markowitz, weights_interval) {
   
   cum_interval <- interval %>% 
     as_tibble() %>% 
-    mutate(m_plus = V1 + 1,
+    mutate(i_plus = V1 + 1,
            cumulative_interval = i_plus %>% cumprod()) %>% 
     select(cumulative_interval)
   
