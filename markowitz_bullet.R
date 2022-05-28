@@ -22,9 +22,9 @@ draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0, range = 0.4) {
   plot <- ggplot(data) +
     geom_path(aes(variance, mean, linetype = rhos)) +
     labs(
-      title = paste0("Markowitz bullet"),
+      title = "Markowitz bullet",
       x = "Variance/Volatility",
-      y = "Mean",
+      y = "Expected Return",
       linetype = NULL
     ) +
     scale_linetype_manual(labels = c(str_c("\U0003C1 = ", rho - range),
@@ -32,7 +32,8 @@ draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0, range = 0.4) {
                                      str_c("\U0003C1 = ", rho)),
                           values = c(2, 3, 1)) +
     theme_few() +
-    theme(legend.position = c(0.1, .85),
+    theme(plot.title = element_text(hjust = 0.5),
+          legend.position = c(0.1, .85),
           legend.text=element_text(size=15),
           legend.background = element_rect(colour = 'black', fill = 'white', linetype='solid'),
           legend.title = NULL)
