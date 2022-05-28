@@ -1,4 +1,3 @@
-library(reshape2)
 cor_heatmap <- function(data) {
   data %>%
     select(-date) %>% 
@@ -14,7 +13,8 @@ cor_heatmap <- function(data) {
          fill = "Correlation") +
     scale_fill_gradient(low = "#B81313", 
                         high = "#002DB5",
-                        limits = c(0,1))
+                        limits = c(0,1)) +
+    theme(plot.title = element_text(hjust = 0.5))
     
 }
 
@@ -40,5 +40,6 @@ pcor_heatmap <- function(data) {
          fill = "Correlation") +
     scale_fill_gradient(low = "#B81313", 
                         high = "#002DB5",
-                        limits = c(-1,1))
+                        limits = c(-1,1)) +
+    theme(plot.title = element_text(hjust = 0.5))
 }

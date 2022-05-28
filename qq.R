@@ -10,7 +10,7 @@ qq_plot <- function(data) {
     facet_wrap(~ symbol) +
     theme_few() +
     labs(x = "Theoretical Quantiles",
-         y = "Empilircal Quantiles")
+         y = "Empirical Quantiles")
 }
 
 qq_plot_ind <- function(data, stock) {
@@ -22,6 +22,7 @@ qq_plot_ind <- function(data, stock) {
     stat_qq_point(color = "grey10", size = 1, alpha = 0.75) +
     theme_few() +
     labs(x = "Theoretical Quantiles",
-         y = "Empilircal Quantiles",
-         title = paste(stock, "QQPlot"))
+         y = "Empirical Quantiles",
+         title = paste(stock, "QQPlot")) +
+    theme(plot.title = element_text(hjust = 0.5))
 }
