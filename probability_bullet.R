@@ -1,7 +1,6 @@
 ## Draw a theoretical Interval model bullet based on a portfolio with two stocks with maximum return = +inf
 
 draw_interval <- function(mean_1, var_1, mean_2, var_2, rho = 0) {
-  mean_1=0.1; var_1=0.01; mean_2=0.2; var_2=0.05; rho=0.02
   alphas <- seq(0, 1, 0.001)
   
   mean_total <- alphas * mean_1 + (1 - alphas) * mean_2
