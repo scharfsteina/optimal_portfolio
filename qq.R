@@ -7,6 +7,7 @@ qq_plot <- function(data) {
     stat_qq_band(color = "green", alpha = 0.2) +
     stat_qq_point(color = "grey10", size = 0.3, alpha = 0.75) +
     stat_qq_line(color = "red", size = 0.25) +
+    scale_x_continuous(breaks = seq(-.1, .1, .05))+
     facet_wrap(~ symbol) +
     theme_few() +
     labs(x = "Theoretical Quantiles",

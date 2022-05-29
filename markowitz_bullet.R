@@ -15,12 +15,20 @@ draw_markowitz <- function(mean_1, var_1, mean_2, var_2, rho = 0, range = 0.4) {
     mean = mean_total,
     variance = variance,
     var_p = variance_rho_p,
-    var_m = variance_rho_m
-  ) %>% 
+    var_m = variance_rho_m) %>% 
     pivot_longer(cols = 2:ncol(.), names_to = "rhos", values_to = "variance")
+  
+  mins <- data %>% 
+    group_by(rhos) %>% 
+    summarise(variance = min(variance)) %>% 
+    left_join(data, by = c("rhos","variance"))
+   
   
   plot <- ggplot(data) +
     geom_path(aes(variance, mean, linetype = rhos)) +
+    geom_point(data = mins,
+               mapping = aes(variance,
+                             mean))+
     labs(
       title = "Markowitz bullet",
       x = "Variance/Volatility",
