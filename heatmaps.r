@@ -11,9 +11,10 @@ cor_heatmap <- function(data) {
          y = NULL,
          title = "Correlation Heatmap of Dow 30",
          fill = "Correlation") +
-    scale_fill_gradient(low = "#B81313", 
-                        high = "#002DB5",
-                        limits = c(0,1)) +
+    scale_fill_gradient2(low = "#eb5600", 
+                        mid = "#1a9988",
+                        high = "#1c3678",
+                        limits = c(-1,1)) +
     theme(plot.title = element_text(hjust = 0.5))
     
 }
@@ -38,8 +39,9 @@ pcor_heatmap <- function(data) {
          y = NULL,
          title = "Partial Correlation Heatmap of Dow 30",
          fill = "Correlation") +
-    scale_fill_gradient(low = "#B81313", 
-                        high = "#002DB5",
+    scale_fill_gradient2(low = "#eb5600", 
+                        mid = "#1a9988",
+                        high = "#1c3678",
                         limits = c(-1,1)) +
     theme(plot.title = element_text(hjust = 0.5))
 }

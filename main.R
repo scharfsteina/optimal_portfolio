@@ -26,7 +26,7 @@ historical_data <- get_data(.from = make_date(2020,1,1), .to = make_date(2021,12
 current_data <- get_data(.from = make_date(2022,1,1), .to = make_date(2022,5,27))
 
 qq_plot(historical_data)
-ggsave("figures/qqplot.png", width = 10, height = 6)
+ggsave("figures/qqplot.png", width = 13, height = 7)
 qq_plot_ind(historical_data, "DOW") # plot an individual qqplot
 
 cor_heatmap(historical_data)
@@ -40,3 +40,4 @@ weights_i <- get_weights_interval(historical_data[-1], -0.05, 1)
 returns <- get_linear_combos(current_data, weights_m, weights_i)
 
 plot_cumulative(returns)
+ggsave("figures/results.png", width = 10, height = 6)
